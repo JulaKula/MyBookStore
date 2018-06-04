@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Book Store</string>
+    <string name="book_contains">The book table contains\ </string>
+    <string name="books">\ books.\n\n</string>
+</resources>
