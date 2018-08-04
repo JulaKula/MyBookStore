@@ -1,97 +1,97 @@
 package com.example.android.mybookstore;
 
-import android.content.ContentValues;
+import android.app.LoaderManager;
+import android.content.ContentUris;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.example.android.mybookstore.data.BookDbHelper;
 import com.example.android.mybookstore.data.StoreContract;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
-    BookDbHelper dbHelper;
+    private static final int BOOK_LOADER = 0;
+
+    BookCursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        dbHelper = new BookDbHelper(this);
-
+        // Setup FAB to open EditorActivity
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertBook();
-                displayDbInfo();
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                startActivity(intent);
             }
         });
-        insertBook();
-        displayDbInfo();
-    }
 
-    private void displayDbInfo() {
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        ListView bookListView = findViewById(R.id.list);
 
-        Cursor cursor = db.query(StoreContract.BookEntry.TABLE_NAME, null, null,
-                null, null, null, null);
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items
+        View emptyView = findViewById(R.id.empty_view);
+        bookListView.setEmptyView(emptyView);
 
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // book table in the database).
-            TextView displayView = findViewById(R.id.text_view);
-            displayView.setText(getString(R.string.book_contains) + cursor.getCount() + getString(R.string.books));
+        // Setup an Adapter to create a list item for each row of data in the Cursor
+        // There is no data yet (until the loader finishes) so pass in null for the Cursor
+        cursorAdapter = new BookCursorAdapter(this, null);
+        bookListView.setAdapter(cursorAdapter);
 
-            displayView.append(StoreContract.BookEntry._ID + " - "
-                    + StoreContract.BookEntry.COLUMN_PRODUCT_NAME + " - "
-                    + StoreContract.BookEntry.COLUMN_PRICE + " - "
-                    + StoreContract.BookEntry.COLUMN_QUANTITY + " - "
-                    + StoreContract.BookEntry.COLUMN_SUPPLIER_NAME + " - "
-                    + StoreContract.BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER + "\n");
-
-            while (cursor.moveToNext()) {
-
-                displayView.append(cursor.getInt(cursor.getColumnIndex(StoreContract.BookEntry._ID)) + " - "
-                        + cursor.getString(cursor.getColumnIndex(StoreContract.BookEntry.COLUMN_PRODUCT_NAME)) + " - $"
-                        + cursor.getDouble(cursor.getColumnIndex(StoreContract.BookEntry.COLUMN_PRICE)) / 100 + " - "
-                        // price is divided by 100 to display proper price with cents
-                        + cursor.getInt(cursor.getColumnIndex(StoreContract.BookEntry.COLUMN_QUANTITY)) + " - "
-                        + cursor.getString(cursor.getColumnIndex(StoreContract.BookEntry.COLUMN_SUPPLIER_NAME)) + " - "
-                        + cursor.getString(cursor.getColumnIndex(StoreContract.BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER))
-                        + "\n");
+        // Setup the item click listener, to send the user to DetailsActivity
+        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                Uri currentBookUri = ContentUris.withAppendedId(StoreContract.BookEntry.CONTENT_URI, id);
+                // Set the URI on the data field of the intent
+                intent.setData(currentBookUri);
+                startActivity(intent);
             }
+        });
 
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+        // Kick off the loader
+        getLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
-    private void insertBook() {
-        // Gets the data repository in write mode
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        // Define a projection that specifies the columns from the table we care about
+        String[] projection = {
+                StoreContract.BookEntry._ID,
+                StoreContract.BookEntry.COLUMN_PRODUCT_NAME,
+                StoreContract.BookEntry.COLUMN_PRICE,
+                StoreContract.BookEntry.COLUMN_QUANTITY};
 
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values.put(StoreContract.BookEntry.COLUMN_PRODUCT_NAME, "Dinosaurs A-Z");
-        values.put(StoreContract.BookEntry.COLUMN_PRICE, 1699);
-        values.put(StoreContract.BookEntry.COLUMN_QUANTITY, 23);
-        values.put(StoreContract.BookEntry.COLUMN_SUPPLIER_NAME, "Best Books Ever");
-        values.put(StoreContract.BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "123 456 789");
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,
+                StoreContract.BookEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+    }
 
-        // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(StoreContract.BookEntry.TABLE_NAME, null, values);
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Update cursorAdapter with this new cursor containing updated book data
+        cursorAdapter.swapCursor(data);
+    }
 
-        Log.v("MainActivity", "new row ID: " + newRowId);
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Callback called when the data needs to be deleted
+        cursorAdapter.swapCursor(null);
     }
 }

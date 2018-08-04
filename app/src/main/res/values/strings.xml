@@ -1,5 +1,40 @@
 <resources>
     <string name="app_name">My Book Store</string>
-    <string name="book_contains">The book table contains\ </string>
-    <string name="books">\ books.\n\n</string>
+    <string name="action_save">Save the product</string>
+    <string name="action_delete">Delete the product</string>
+    <string name="action_edit">Edit the product</string>
+    <string name="title">Title</string>
+    <string name="price">Price</string>
+    <string name="quantity">Quantity</string>
+    <string name="supplier_info">Supplier Info</string>
+    <string name="name">Name</string>
+    <string name="price_unit">$</string>
+    <string name="phone">Phone number</string>
+    <string name="empty_view_title_text">The store is empty</string>
+    <string name="empty_view_subtitle_text">Add a new book by tapping on a plus button.
+        \nBook title, its price and quantity are required fields.
+        \nYou can also provide supplier information.</string>
+    <string name="editor_activity_title_new_book">Add new book</string>
+    <string name="editor_activity_title_edit_book">Edit book</string>
+    <string name="editor_insert_book_successful">Book saved</string>
+    <string name="editor_insert_book_failed">Error with saving book</string>
+    <string name="editor_update_book_successful">Book updated</string>
+    <string name="editor_update_book_failed">Error with updating book</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="delete_dialog_msg">Delete this book?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="editor_delete_book_successful">Book deleted</string>
+    <string name="editor_delete_book_failed">Error with deleting book</string>
+    <string name="detail_activity_title">Details</string>
+    <string name="sale">SALE</string>
+    <string name="order">ORDER</string>
+    <string name="plus_sign">+</string>
+    <string name="minus_sign">-</string>
+    <string name="quantity_not_negative">Quantity can not be less than zero</string>
+    <string name="dollar_sign">$</string>
+    <string name="editor_empty_field">Title, price and quantity can not be empty!
+    \nInput the correct information before you continue</string>
 </resources>

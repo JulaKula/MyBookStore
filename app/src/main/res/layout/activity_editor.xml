@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_big"
+    tools:context=".EditorActivity">
+
+    <!-- Product Name -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/title" />
+
+        <EditText
+            android:id="@+id/edit_book_title"
+            style="@style/EditorFieldStyle"
+            android:inputType="textCapWords" />
+
+    </RelativeLayout>
+
+    <!-- Price -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/price" />
+
+        <EditText
+            android:id="@+id/edit_price"
+            style="@style/EditorFieldStyle"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            style="@style/EditorFieldStyle"
+            android:gravity="end"
+            android:paddingRight="@dimen/margin_big"
+            android:paddingTop="@dimen/margin_big"
+            android:text="@string/price_unit"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+    </RelativeLayout>
+
+    <!-- Quantity -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/quantity" />
+
+        <EditText
+            android:id="@+id/edit_quantity"
+            style="@style/EditorFieldStyle"
+            android:inputType="number"
+            android:maxLength="4" />
+
+    </RelativeLayout>
+
+    <!-- Supplier Info -->
+    <TextView
+        style="@style/CategoryStyle"
+        android:layout_marginTop="@dimen/margin_big"
+        android:text="@string/supplier_info"
+        android:textStyle="bold" />
+
+    <!-- Supplier -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/name" />
+
+        <EditText
+            android:id="@+id/edit_supplier_name"
+            style="@style/EditorFieldStyle"
+            android:inputType="textCapWords" />
+
+    </RelativeLayout>
+
+    <!-- Supplier Phone -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/phone" />
+
+        <EditText
+            android:id="@+id/edit_supplier_phone"
+            style="@style/EditorFieldStyle"
+            android:inputType="phone" />
+
+    </RelativeLayout>
+</LinearLayout>
