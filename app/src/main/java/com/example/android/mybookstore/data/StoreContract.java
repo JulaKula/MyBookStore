@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class StoreContract {
+public final class StoreContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.android.mybookstore";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
@@ -25,7 +25,6 @@ public class StoreContract {
 
         public final static String TABLE_NAME = "books";
 
-        public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_PRODUCT_NAME = "product_name";
         public final static String COLUMN_PRICE = "price";
         public final static String COLUMN_QUANTITY = "quantity";

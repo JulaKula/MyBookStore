@@ -12,8 +12,7 @@
     <string name="phone">Phone number</string>
     <string name="empty_view_title_text">The store is empty</string>
     <string name="empty_view_subtitle_text">Add a new book by tapping on a plus button.
-        \nBook title, its price and quantity are required fields.
-        \nYou can also provide supplier information.</string>
+        \nAll fields are required.</string>
     <string name="editor_activity_title_new_book">Add new book</string>
     <string name="editor_activity_title_edit_book">Edit book</string>
     <string name="editor_insert_book_successful">Book saved</string>
@@ -35,6 +34,6 @@
     <string name="minus_sign">-</string>
     <string name="quantity_not_negative">Quantity can not be less than zero</string>
     <string name="dollar_sign">$</string>
-    <string name="editor_empty_field">Title, price and quantity can not be empty!
+    <string name="editor_empty_field">None of the fields can be empty!
     \nInput the correct information before you continue</string>
 </resources>

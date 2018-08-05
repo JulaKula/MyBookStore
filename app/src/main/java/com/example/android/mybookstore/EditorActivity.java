@@ -113,7 +113,8 @@ public class EditorActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
 
         // Check if any of the required values is null, if so, display a toast to the user
-        if (TextUtils.isEmpty(titleString) || TextUtils.isEmpty(priceString) || TextUtils.isEmpty(quantityString)) {
+        if (TextUtils.isEmpty(titleString) || TextUtils.isEmpty(priceString) || TextUtils.isEmpty(quantityString)
+                || TextUtils.isEmpty(supplierNameString) || TextUtils.isEmpty(supplierPhoneString)) {
             Toast.makeText(this, getString(R.string.editor_empty_field),
                     Toast.LENGTH_LONG).show();
         } else {
